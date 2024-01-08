@@ -11,8 +11,8 @@
     <form action="submit/" method="post">
         {% csrf_token %}
 
-        <label for="User">Username:</label>
-        <input type="text" name="User">
+        <label for="user_name">Username:</label>
+        <input type="text" name="user_name">
       
         <label for="domain">Domain:</label>
         <input type="text" name="domain">
@@ -27,7 +27,7 @@
    
     <ul>
         {% for entry in whitelist_entries %}
-            <li>{{ entry.domain }}  -  {{entry.addresses}}<b>({{entry.status}})</b></li>
+            <li>{{ entry.user_name}}   --{{ entry.domain }}  -  {{entry.addresses}}<b>({{entry.status}})</b></li>
         {% endfor %}
     </ul>
     <pre><h4>Note:By Default Your Status is in Pending State</h4></pre>

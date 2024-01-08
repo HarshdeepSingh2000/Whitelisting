@@ -4,5 +4,5 @@ from .models import *
 
 @admin.register(WhitelistRequest)
 class AuthorAdmin(admin.ModelAdmin):
-    list_display = ["user","domain", "addresses", "status"]
+    list_display = ["user_name","domain", "addresses", "status"]
 
