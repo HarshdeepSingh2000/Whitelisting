@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IP Whitelisting</title>
+</head>
+<body>
+
+    <h1>IP Whitelisting</h1>
+    <form action="submit/" method="post">
+        {% csrf_token %}
+
+        <label for="User">Username:</label>
+        <input type="text" name="User">
+      
+        <label for="domain">Domain:</label>
+        <input type="text" name="domain">
+
+        <label for="addresses">IP Address:</label>
+        <input type="text" name="addresses">
+
+        <button type="submit">Submit</button>
+    </form>
+
+    <h2>Whitelist Entries:</h2>
+   
+    <ul>
+        {% for entry in whitelist_entries %}
+            <li>{{ entry.domain }}  -  {{entry.addresses}}<b>({{entry.status}})</b></li>
+        {% endfor %}
+    </ul>
+    <pre><h4>Note:By Default Your Status is in Pending State</h4></pre>
+</body>
+</html>
