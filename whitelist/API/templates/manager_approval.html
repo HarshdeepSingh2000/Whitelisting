@@ -31,5 +31,28 @@
         <button type="submit" name="action" value="approve">Approve</button>
         <button type="submit" name="action" value="reject">Reject</button>
     </form>
+    <br>
+    <br>
+
+    <table>
+        <thead>
+            <tr>
+                <th>User Name</th>
+                <th>Domain</th>
+                <th>Addresses</th>
+                <th>Status</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for request in model_data%}
+                <tr>
+                    <td>{{ request.user_name }}</td>
+                    <td>{{ request.domain }}</td>
+                    <td>{{ request.addresses }}</td>
+                    <td>{{ request.status }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
 </body>
 </html>

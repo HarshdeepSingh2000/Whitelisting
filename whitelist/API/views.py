@@ -1,14 +1,10 @@
 from rest_framework import generics, permissions, status
-from rest_framework.response import Response
 from .models import WhitelistRequest
 from rest_framework.permissions import IsAuthenticated
 from .serializers import WhitelistRequestSerializer
 from django.shortcuts import render,redirect,HttpResponse, get_object_or_404
-from rest_framework.authtoken.models import Token
-from django.contrib.auth.decorators import login_required, user_passes_test
 from django.views import View
 from django.shortcuts import render
-from django.utils.decorators import method_decorator
 
 class WhitelistRequestListCreateView(generics.ListCreateAPIView):
     queryset = WhitelistRequest.objects.all()
@@ -24,7 +20,7 @@ class WhitelistRequestListCreateView(generics.ListCreateAPIView):
             domain = request.POST.get('domain')
             addresses = request.POST.get('addresses')
 
-            # Create and save a WhitelistRequest instance
+
             whitelist_request = WhitelistRequest(user_name=user_name, domain=domain,addresses=addresses)
             whitelist_request.save()
 
@@ -39,25 +35,19 @@ class IsAdminOrReadOnly(permissions.BasePermission):
         return request.user and request.user.is_authenticated and request.user.is_staff
 
 
-def is_manager(user):
-    # Replace this with your logic to check if the user is a manager
-    return user.is_authenticated and user.is_manager
-
-@method_decorator(login_required, name='dispatch')
-@method_decorator(user_passes_test(is_manager), name='dispatch')
 class WhitelistRequestApproveView(generics.UpdateAPIView):
     permission_classes = [IsAuthenticated]
     queryset = WhitelistRequest.objects.all()
     serializer_class = WhitelistRequestSerializer
     permission_classes = [IsAdminOrReadOnly]
+    
     def manager_approval(request):
-        if request.user.is_authenticated:
+            model_data = WhitelistRequest.objects.all()
             if request.method == 'POST':
+                
                 action = request.POST.get('action')
                 domain = request.POST.get('domain')
                 ip_address = request.POST.get('ip_address')
-                approver_token = Token.objects.get()
-                print(approver_token)
 
 
                 if action == 'approve':
@@ -77,6 +67,5 @@ class WhitelistRequestApproveView(generics.UpdateAPIView):
                     return render(request, 'error.html', {'error_message': 'Whitelist entry rejected'})
 
             
-            return render(request, 'manager_approval.html')
-        else:
-            return HttpResponse("User is not autheticated")
+            return render(request, 'manager_approval.html',{'model_data': model_data})
+        
